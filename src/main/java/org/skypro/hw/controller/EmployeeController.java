@@ -5,6 +5,7 @@ import org.skypro.hw.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Collection;
 
@@ -13,10 +14,10 @@ import java.util.Collection;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<String> handleException(Exception e) {
+    @ExceptionHandler({HttpStatusCodeException.class})
+    public ResponseEntity<String> handleException(HttpStatusCodeException e) {
         e.printStackTrace();
-        return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
     }
 
     private final EmployeeService employeeService;
